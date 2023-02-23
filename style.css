@@ -1,0 +1,45 @@
+.pay-sbp {
+    background-color: blue;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+.banks {
+    margin-top: 30px;
+}
+
+.banks__element {
+    display: flex;
+    width: 500px;
+    padding: 15px 10px;
+    align-items: center;
+    background-color: #eee;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #000;
+}
+
+.banks__icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-size: contain;
+    margin-right: 20px;
+}
+
+.banks__title {
+    font-size: 18px;
+}
+
+.search {
+    padding: 5px 15px;
+    border: solid 1px #eee;
+}
+
+.invisible {
+    display: none;
+}

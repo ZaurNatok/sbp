@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WIDGET-SDK</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./style.css">
+ 
+</head>
+<body>
+
+<a href="#" class="pay-sbp">Оплатить по СБП</a>
+<input type="text" name="search" id="search" class="search invisible" placeholder="Найти банк">
+<p class="banks-length">Найдено банков: <span class="banks-count"></span></p>
+<div class="banks"></div>
+
+
+
+
+<script src="slide-up-widget.js"></script>
+<script>
+
+const slideUpWidget = new SlideUpWidget(window.localStorage, window.navigator);
+const urlRequest = "https://qr.nspk.ru/AS100001ORTF4GAF80KPJ53K186D9A3G?type=01&bank=100000000007&crc=0C8A";
+const getBanks = document.querySelector('.pay-sbp');
+const searchInput = document.querySelector('.search');
+const banksContainer = document.querySelector('.banks');
+const banksLength = document.querySelector('.banks-count');
+
+
+function makeBanksList(banks) {
+    if(banks) {
+        searchInput.classList.remove('invisible');
+    }
+    
+    for (let i = 0; i < banks.length; i++) {
+        let bankElem = document.createElement('a');
+        let bankIcon = document.createElement('div');
+        let bankTitle = document.createElement('h2');
+
+        banksContainer.appendChild(bankElem);
+        bankElem.appendChild(bankIcon);
+        bankElem.appendChild(bankTitle);
+
+        bankElem.classList.add('banks__element');
+        bankIcon.classList.add('banks__icon');
+        bankTitle.classList.add('banks__title');
+
+        bankIcon.setAttribute('style', 'background-image:url(' + banks[i].logoURL + ');');
+        bankTitle.textContent = banks[i].bankName;
+        bankElem.setAttribute('href', banks[i].dboLink);
+    }
+}
+
+getBanks.addEventListener('click', async () => {
+    const bankList = await slideUpWidget.getBankList(urlRequest);
+    makeBanksList(bankList);
+    banksLength.textContent = bankList.length;
+
+    searchInput.addEventListener('keyup', function() {
+    let keyword = searchInput.value.toLowerCase();
+    debugger
+    let bankArr = [];
+
+    for(let i = 0; i < bankList.length; i++) {
+        if(bankList[i].bankName.toLowerCase().includes(keyword)) {
+            banksContainer.textContent = '';
+            bankArr.push(bankList[i]);
+        } else {
+            if(bankArr.length > 0) {
+                banksContainer.textContent = '';
+            } else {
+                banksContainer.textContent = 'Не найдено';
+            }
+        }
+    }
+    banksLength.textContent = bankArr.length;
+    makeBanksList(bankArr);
+})
+})
+
+
+
+
+
+</script>
+</body>
+</html>
